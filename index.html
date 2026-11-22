@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taylor Swift Surprise Song Mashup Generator</title>
+<title>The TS Zodiac x Surprise Song Mashup Generator</title>
 
 <style>
 * {
@@ -191,6 +191,13 @@ select:focus {
     font-size: 19px;
     line-height: 1.6;
 }
+.description {
+    margin-top: 15px;
+    color: #7a706c;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.7;
+}
 /* Card footer */
 .card-footer {
     margin-top: 25px;
@@ -258,10 +265,10 @@ select:focus {
 
 <div class="brand">✨The TS Zodiac✨</div>
 
-<h1>Your Surprise Song Mashup</h1>
+<h1>You Sun x Moon Surprise Song Mashup</h1>
 
 <p class="intro">
-Select your Sun and Moon signs to discover which Taylor Swift surprise song mashup has been assigned to your astrological combination. If you don't like your result, press generate again!
+Enter your Sun and Moon signs to discover your Eras surprise song mashup, along with a little tiny explanation roast! This generator is intended for fun, and in no way invalidates your personal favourite mashups.
 </p>
 
 <div class="choices">
@@ -322,6 +329,7 @@ My Surprise Song Mashup
 <div class="result">
 <h2 id="combinationTitle"></h2>
 <div class="song" id="mashupResult"></div>
+<div class="description" id="mashupDescription"></div>
 </div>
 
 <div class="card-footer">
@@ -533,6 +541,25 @@ Pisces: [
 
 };
 
+
+const descriptions = {
+    Aries: [
+        "You warned everyone what would happen, people ignored you and now you’re delivering the consequences.",
+        "If you’re falling in love you’re going to do it headfirst and irresponsibly, but in a very aesthetic way.",
+        "You’re flirting with the entire room, but catching feelings for someone mid-conversation.",
+        "You remember everything, forgive nothing and cry about it while plotting your revenge.",
+        "Dramatically falling in love as long as you have the appropriate lighting, setting and soundtrack.",
+        "Because you identified twelve red flags and ignored all of them, but at least you were right about it.",
+        "Wants peace and harmony in a relationship, but would also like to win the argument and the breakup.",
+        "Fought to save the relationship while you could, but once it was over you salted the earth where it stood.",
+        "You’re already halfway to the next adventure before you’ve finished saying goodbye.",
+        "You turned your trauma into a five year plan, but you’re still mad about what happened.",
+        "Nobody understands your taste in partners, you insist they’re artistic choices.",
+        "You insist you’ve closed chapters in your life, but then wait for the universe to issue you an apology."
+    ]
+};
+
+
 /* Generate the assigned mashup */
 
 function generateMashup() {
@@ -553,6 +580,9 @@ function generateMashup() {
 
     document.getElementById("mashupResult").textContent =
         mashup;
+
+document.getElementById("mashupDescription").textContent =
+    descriptions[sun][moonIndex];
 
     /* Show the results */
 
