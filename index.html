@@ -1,1 +1,604 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taylor Swift Surprise Song Mashup Generator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 45px 20px;
+    background: #f8f5f0;
+    color: #3d3835;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px;
+}
+.generator {
+    max-width: 620px;
+    margin: 0 auto;
+}
+/* Brand */
+.brand {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #9a908b;
+    text-align: center;
+    margin-bottom: 18px;
+}
+/* Main title */
+h1 {
+    text-align: center;
+    font-size: 27px;
+    font-weight: normal;
+    letter-spacing: 1.5px;
+    margin: 0 0 14px;
+    color: #4a4240;
+}
+/* Introduction */
+.intro {
+    max-width: 540px;
+    margin: 0 auto 38px;
+    text-align: center;
+    color: #7a706c;
+    font-style: italic;
+    line-height: 1.75;
+}
+/* Dropdown section */
+.choices {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+.choice label {
+    display: block;
+    margin-bottom: 8px;
+    color: #5a514e;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+/* Dropdowns */
+select {
+    width: 100%;
+    padding: 10px 11px;
+    border: 1px solid #cfc6c0;
+    border-radius: 2px;
+    background: #fffdfa;
+    color: #4a4240;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+select:focus {
+    outline: none;
+    border-color: #9b8d86;
+}
+/* Generate button wrapper */
+.generate-wrapper {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto 42px;
+}
+/* Generate button */
+.generate {
+    display: block;
+    margin: 0;
+    padding: 11px 25px;
+    border: 1px solid #8f817a;
+    border-radius: 2px;
+    background: transparent;
+    color: #514844;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.generate:hover {
+    background: #514844;
+    color: #fffdfa;
+}
+/* Sparkles around generate button */
+.sparkle {
+    position: absolute;
+    pointer-events: none;
+    color: #9a908b;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    opacity: 0;
+    animation: sparkleButton 1.2s ease-out forwards;
+}
+@keyframes sparkleButton {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(4px);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.7) translateY(-14px);
+    }
+}
+/* Results */
+#results {
+    display: none;
+}
+/* Results card */
+.results-card {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 34px 30px 30px;
+    background: #fffdfa;
+    border: 1px solid #cfc6c0;
+    outline: 1px solid #e5ddd7;
+    outline-offset: 5px;
+    text-align: center;
+}
+/* Soft card entrance */
+.results-card.show {
+    animation: cardAppear 0.6s ease-out;
+}
+@keyframes cardAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Results card title */
+.results-heading {
+    margin: 0 0 28px;
+    color: #4a4240;
+    font-size: 18px;
+    font-weight: normal;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+/* Individual result */
+.result {
+    padding: 20px 0;
+    border-top: 1px solid #ded6d0;
+}
+.result:last-of-type {
+    border-bottom: 1px solid #ded6d0;
+}
+.result h2 {
+    margin: 0 0 14px;
+    color: #7a706c;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+.song {
+    color: #403936;
+    font-size: 19px;
+    line-height: 1.6;
+}
+/* Card footer */
+.card-footer {
+    margin-top: 25px;
+    color: #9a908b;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+}
+.card-footer a {
+    color: #9a908b;
+    text-decoration: none;
+    border-bottom: 1px solid #d1c8c2;
+}
+.card-footer a:hover {
+    color: #514844;
+}
+/* Main footer */
+.footer {
+    text-align: center;
+    color: #9a908b;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    margin-top: 35px;
+}
+.footer a {
+    color: #9a908b;
+    text-decoration: none;
+    border-bottom: 1px solid #d1c8c2;
+}
+.footer a:hover {
+    color: #514844;
+}
+/* Mobile */
+@media (max-width: 600px) {
+    body {
+        padding: 32px 18px;
+    }
+    .choices {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    .intro {
+        margin-bottom: 30px;
+    }
+    .generate-wrapper {
+        margin-bottom: 38px;
+    }
+    .results-card {
+        padding: 30px 22px 26px;
+    }
+    .results-heading {
+        font-size: 16px;
+    }
+    .song {
+        font-size: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="generator">
+
+<div class="brand">✨The TS Zodiac✨</div>
+
+<h1>Your Surprise Song Mashup</h1>
+
+<p class="intro">
+Select your Sun and Moon signs to discover which Taylor Swift surprise song mashup has been assigned to your astrological combination. If you don't like your result, press generate again!
+</p>
+
+<div class="choices">
+
+<div class="choice">
+<label for="sun">Sun</label>
+<select id="sun">
+<option value="">select</option>
+<option>Aries</option>
+<option>Taurus</option>
+<option>Gemini</option>
+<option>Cancer</option>
+<option>Leo</option>
+<option>Virgo</option>
+<option>Libra</option>
+<option>Scorpio</option>
+<option>Sagittarius</option>
+<option>Capricorn</option>
+<option>Aquarius</option>
+<option>Pisces</option>
+</select>
+</div>
+
+<div class="choice">
+<label for="moon">Moon</label>
+<select id="moon">
+<option value="">select</option>
+<option>Aries</option>
+<option>Taurus</option>
+<option>Gemini</option>
+<option>Cancer</option>
+<option>Leo</option>
+<option>Virgo</option>
+<option>Libra</option>
+<option>Scorpio</option>
+<option>Sagittarius</option>
+<option>Capricorn</option>
+<option>Aquarius</option>
+<option>Pisces</option>
+</select>
+</div>
+
+</div>
+
+<div class="generate-wrapper">
+<button class="generate" onclick="generateMashup()">
+generate 🫶
+</button>
+</div>
+
+<div id="results">
+<div class="results-card">
+
+<div class="results-heading">
+My Surprise Song Mashup
+</div>
+
+<div class="result">
+<h2 id="combinationTitle"></h2>
+<div class="song" id="mashupResult"></div>
+</div>
+
+<div class="card-footer">
+by <a href="https://thetszodiac.tumblr.com/" target="_blank">thetszodiac.tumblr.com</a>
+</div>
+
+</div>
+</div>
+
+<p class="footer">
+Back to <a href="https://thetszodiac.tumblr.com/" target="_blank">The TS Zodiac</a>
+<br>
+<br>An independent fan project.<br>Not affiliated with Taylor Swift.
+</p>
+
+</div>
+
+<script>
+
+/* All 144 Sun x Moon mashup assignments */
+
+const moonSigns = [
+"Aries", "Taurus", "Gemini", "Cancer",
+"Leo", "Virgo", "Libra", "Scorpio",
+"Sagittarius", "Capricorn", "Aquarius", "Pisces"
+];
+
+const mashups = {
+
+Aries: [
+"Cassandra x mad woman x I Did Something Bad",
+"Our Song x Jump Then Fall",
+"Sparks Fly x Message In A Bottle",
+"Should've Said No x You're Not Sorry",
+"Sparks Fly x gold rush",
+"Should've Said No x You're Not Sorry",
+"Death By A Thousand Cuts x The Great War",
+"The Great War x You're Losing Me",
+"the 1 x Wonderland",
+"Would've Could've Should've x I Know Places",
+"I Can Fix Him (No Really I Can) x I Can See You",
+"closure x A Perfectly Good Heart"
+],
+
+Taurus: [
+"Guilty as Sin? x Untouchable",
+"Paper Rings x Stay Stay Stay",
+"The Prophecy x long story short",
+"ivy x Call It What You Want",
+"Ours x the last great american dynasty",
+"Out Of The Woods x All You Had To Do Was Stay",
+"Begin Again x Paris",
+"Would've Could've Should've x ivy",
+"Cornelia Street x The Bolter",
+"Cornelia Street x Maroon",
+"Sweet Nothing x hoax",
+"Mine x Starlight"
+],
+
+Gemini: [
+"Sparks Fly x Message In A Bottle",
+"Speak Now x Hey Stephen",
+"Getaway Car x august x The Other Side Of The Door",
+"The Tortured Poets Department x Maroon",
+"Sweeter Than Fiction x Holy Ground",
+"Getaway Car x Out Of The Woods",
+"imgonnagetyouback x Dress",
+"Haunted x Wonderland",
+"The Bolter x Labyrinth",
+"You're On Your Own, Kid x long story short",
+"Hits Different x Welcome To New York",
+"Message In A Bottle x How You Get The Girl x New Romantics"
+],
+
+Cancer: [
+"Carolina x no body, no crime",
+"Tim McGraw x Timeless",
+"Our Song x Call It What You Want",
+"Last Kiss x Sad Beautiful Tragic",
+"Mary's Song x So High School x Everything Has Changed",
+"White Horse x coney island",
+"We Were Happy x happiness",
+"I Love You, I'm Sorry x Last Kiss",
+"You Are In Love x cowboy like me",
+"Fifteen x You're On Your Own, Kid",
+"It's Nice To Have A Friend x dorothea",
+"tis the damn season x Daylight"
+],
+
+Leo: [
+"The Alchemy x Treacherous",
+"I Think He Knows x Gorgeous",
+"The Albatross x Holy Ground",
+"I Don't Wanna Live Forever x imgonnagetyouback",
+"Clara Bow x The Lucky One",
+"The Albatross x Dancing With Our Hands Tied",
+"mirrorball x Clara Bow",
+"This Is What You Came For x gold rush",
+"the last great american dynasty x Run",
+"thanK you aIMee x Mean",
+"Mr Perfectly Fine x Better Than Revenge",
+"I Don't Wanna Live Forever x Dress"
+],
+
+Virgo: [
+"Espresso x Is It Over Now? x Please Please Please",
+"right where you left me x All You Had To Do Was Stay",
+"long story short x The Story Of Us",
+"Hits Different x Death By A Thousand Cuts",
+"The Albatross x Dancing With Our Hands Tied",
+"Out Of The Woods x Is It Over Now? x Clean",
+"Afterglow x Dress",
+"You're Losing Me x How Did It End?",
+"this is me trying × Daylight",
+"My Boy Only Breaks His Favourite Toys x This Is Why We Can't Have Nice Things",
+"Nothing New x Dear Reader",
+"My Boy Only Breaks His Favourite Toys x coney island"
+],
+
+Libra: [
+"Come Back…Be Here x The Way I Loved You x The Other Side Of The Door",
+"mirrorball x Guilty as Sin?",
+"Death By A Thousand Cuts x Getaway Car",
+"Fresh Out The Slammer x You Are In Love",
+"Today Was A Fairytale x I Think He Knows",
+"Afterglow x Dress",
+"Come Back…Be Here x Daylight",
+"The Manuscript x Red",
+"The Archer x Question…?",
+"Everything Has Changed x End Game x I Think He Knows",
+"mirrorball x epiphany",
+"All Of The Girls You Loved Before x Crazier"
+],
+
+Scorpio: [
+"Should've Said No x I Did Something Bad",
+"I Don't Wanna Live Forever x Mine",
+"I Don't Wanna Live Forever x I Wish You Would",
+"False God x tis the damn season",
+"Red x Maroon",
+"us. x Out Of The Woods",
+'False God x "Slut!"',
+"The Black Dog x Haunted",
+"Is It Over Now? x I Wish You Would",
+"Haunted x exile",
+"Mr Perfectly Fine x Red",
+"Suburban Legends x New Year's Day"
+],
+
+Sagittarius: [
+"The Bolter x Getaway Car",
+"The Prophecy x This Love",
+"State Of Grace x Labyrinth",
+"Tim McGraw x cowboy like me",
+"King Of My Heart x The Alchemy",
+"State Of Grace x You're On Your Own, Kid",
+"The Archer x Question…?",
+"Maroon x cowboy like me",
+"A Place In This World x New Romantics",
+"The Archer x You're On Your Own, Kid",
+"Long Live x Change",
+"Long Live x New Year's Day x The Manuscript"
+],
+
+Capricorn: [
+"Sparks Fly x I Can Fix Him (No Really I Can)",
+"I Almost Do x The Moment I Knew",
+"this is me trying x Labyrinth",
+"Dear John x Sad Beautiful Tragic",
+"thanK you aIMee x Mean",
+"Cold As You x exile",
+"this is me trying x Daylight",
+"Forever & Always x Maroon",
+"You're On Your Own, Kid x Long Live",
+"I Forgot That You Existed x This Is Why We Can't Have Nice Things",
+"it's time to go x Better Man",
+"Clean x evermore"
+],
+
+Aquarius: [
+"I Can Fix Him (No Really I Can) x I Can See You",
+"I Can See You x Mine",
+"The Tortured Poets Department x Now That We Don't Talk",
+"This Love x Ours",
+"the last great american dynasty x Run",
+"Say Don't Go x Welcome To New York x Clean",
+"Glitch x Everything Has Changed",
+"The Black Dog x exile",
+"Long Live x Change",
+"it's time to go x Better Man",
+"Nothing New x Dear Reader",
+"Fresh Out The Slammer x High Infidelity"
+],
+
+Pisces: [
+"closure x A Perfectly Good Heart",
+"New Year's Day x peace",
+"Message In A Bottle x How You Get The Girl x New Romantics",
+"This Love x Call It What You Want",
+"Death By A Thousand Cuts x Babe",
+"Foolish One x Tell Me Why",
+"loml x White Horse",
+"loml x Don't You",
+"Superstar x invisible string",
+"evermore x Peter",
+"I Look In People's Windows x Snow On The Beach",
+"I Hate It Here x the lakes"
+]
+
+};
+
+/* Generate the assigned mashup */
+
+function generateMashup() {
+
+    const sun = document.getElementById("sun").value;
+    const moon = document.getElementById("moon").value;
+
+    if (!sun || !moon) {
+        alert("Please select your Sun and Moon signs!");
+        return;
+    }
+
+    const moonIndex = moonSigns.indexOf(moon);
+    const mashup = mashups[sun][moonIndex];
+
+    document.getElementById("combinationTitle").textContent =
+        sun + " Sun × " + moon + " Moon";
+
+    document.getElementById("mashupResult").textContent =
+        mashup;
+
+    /* Show the results */
+
+    const results = document.getElementById("results");
+    const card = document.querySelector(".results-card");
+
+    results.style.display = "block";
+
+    /* Restart the card entrance animation */
+
+    card.classList.remove("show");
+    void card.offsetWidth;
+    card.classList.add("show");
+
+    /* Remove previous sparkles */
+
+    document.querySelectorAll(".sparkle").forEach(sparkle => sparkle.remove());
+
+    /* Create subtle sparkles around the generate button */
+
+    const buttonWrapper = document.querySelector(".generate-wrapper");
+
+    const sparklePositions = [
+        { top: "-12px", left: "-15px", symbol: "✦" },
+        { top: "-15px", right: "-14px", symbol: "✧" },
+        { bottom: "-10px", left: "5px", symbol: "·" },
+        { bottom: "-12px", right: "4px", symbol: "✦" }
+    ];
+
+    sparklePositions.forEach((position, index) => {
+        const sparkle = document.createElement("span");
+
+        sparkle.className = "sparkle";
+        sparkle.textContent = position.symbol;
+
+        Object.assign(sparkle.style, position);
+
+        sparkle.style.animationDelay =
+            (index * 0.12) + "s";
+
+        buttonWrapper.appendChild(sparkle);
+    });
+
+}
+
+</script>
+</body>
+</html>
+
